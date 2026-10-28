@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>小小算術家：六島大冒險</title>
+    <meta name="application-name" content="小小算術家：六島大冒險">
+    <meta name="apple-mobile-web-app-title" content="小小算術家">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <meta name="color-scheme" content="light">
+    <meta property="og:title" content="小小算術家：六島大冒險">
+    <meta name="description" content="國小一到四年級的數學冒險學習網站">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/icons/app-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/icons/app-icon-192.png">
+    <meta name="theme-color" content="#79D2F2">
+    <link rel="stylesheet" href="css/fonts.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/tokens.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/components.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/styles.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/responsive.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/zoom-safe.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/crew.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/entrance.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/map.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/island.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/final.css?v=2026.10.28-10">
+    <link rel="stylesheet" href="css/compat.css?v=2026.10.28-10">
+</head>
+<body>
+    <noscript><div class="noscript-box"><h1><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></h1><p>這個網站需要開啟 JavaScript 才能使用，請在瀏覽器設定中開啟後重新整理。</p></div></noscript>
+
+    <div id="loading" role="status" aria-live="polite"><div class="loading-brand"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div><div class="loading-line"><span class="ds-spinner" aria-hidden="true"></span><span>資料同步中...</span></div></div>
+    <div id="star-animation-container"></div>
+
+    <div id="ultimate-celebration">
+        <div class="guardian-badge" aria-hidden="true"><span data-icon="crown" data-size="120"></span></div>
+        <h1 style="font-size:3rem; color:var(--star-gold); margin:0;">六座燈塔全部亮起了！</h1>
+        <p style="font-size:1.5rem;">你完成了所有挑戰，成為【數學島守護者】！</p>
+        <button class="btn-game btn-primary" style="margin-top:20px; font-size:1.5rem;" onclick="document.getElementById('ultimate-celebration').style.display='none'">繼續巡視島嶼</button>
+        <div class="brand-foot" style="color:#fff;"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div>
+    </div>
+
+    <!-- 身分選擇 -->
+    <div id="screen-role-select" class="screen active en-screen">
+        <div class="en-sea" aria-hidden="true"><i class="en-sun"></i><i class="en-cloud en-cloud--1"></i><i class="en-cloud en-cloud--2"></i><i class="en-cloud en-cloud--3"></i><i class="en-isle en-isle--1"></i><i class="en-isle en-isle--2"></i><i class="en-lh"></i><i class="en-waves"></i></div>
+        <div class="en-wrap en-wrap--role">
+            <h1 class="ds-title-stroke en-hero" id="brand-title"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></h1>
+            <p class="en-lead">選擇身分，開始今天的數學冒險！</p>
+            <div class="en-roles">
+                <button class="en-role en-role--student" id="btn-role-student" type="button" aria-label="以學生身分進入">
+                    <span class="en-role__medal"><i data-icon="crew" data-size="64"></i></span>
+                    <span class="ds-plank en-role__plank">我是學生</span>
+                    <span class="en-role__desc">登入帳號，前往六座數學島嶼</span>
+                    <span class="ds-chip ds-chip--success en-role__go" aria-hidden="true">出發去冒險</span>
+                </button>
+                <button class="en-role en-role--teacher" id="btn-role-teacher" type="button" aria-label="以教師身分進入">
+                    <span class="en-role__medal"><i data-icon="teacher" data-size="64"></i></span>
+                    <span class="ds-plank en-role__plank">我是老師</span>
+                    <span class="en-role__desc">查看學生進度與作答紀錄</span>
+                    <span class="ds-chip ds-chip--info en-role__go" aria-hidden="true">進入戰情室</span>
+                </button>
+            </div>
+            <div class="en-crewrow" id="en-crewrow" aria-hidden="true"></div>
+        </div>
+    </div>
+
+    <!-- 學生端：登入 -->
+    <div id="screen-student-login" class="screen en-screen">
+        <div class="en-sea" aria-hidden="true"><i class="en-sun"></i><i class="en-cloud en-cloud--1"></i><i class="en-cloud en-cloud--2"></i><i class="en-cloud en-cloud--3"></i><i class="en-isle en-isle--1"></i><i class="en-isle en-isle--2"></i><i class="en-lh"></i><i class="en-waves"></i></div>
+        <div class="en-wrap en-wrap--card">
+            <div class="ds-card ds-card--canvas en-card">
+                <div class="en-card__brand"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div>
+                <h1 class="ds-plank en-card__title"><span data-icon="crew" data-size="30"></span>小領航員登入</h1>
+                <div class="ds-field">
+                    <label class="ds-label" for="student-username">請輸入專屬代碼</label>
+                    <input type="text" id="student-username" class="ds-input" placeholder="例如: 3A01小明" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+                </div>
+                <div class="en-actions">
+                    <button type="button" class="ds-btn ds-btn--coral ds-btn--block" onclick="doStudentAuth('register')"><span data-icon="star" data-size="26"></span>註冊新帳號</button>
+                    <button type="button" class="ds-btn ds-btn--sea ds-btn--block" onclick="doStudentAuth('login')"><span data-icon="next" data-size="26"></span>舊玩家登入</button>
+                </div>
+                <button type="button" class="ds-btn ds-btn--ghost ds-btn--block en-back" onclick="logoutToRoleSelect()"><span data-icon="back" data-size="26"></span>返回身分選擇</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 船員登記所（選角色） -->
+    <div id="screen-avatar-select" class="screen en-screen en-screen--crew">
+        <div class="en-sea" aria-hidden="true"><i class="en-sun"></i><i class="en-cloud en-cloud--1"></i><i class="en-cloud en-cloud--2"></i><i class="en-isle en-isle--1"></i><i class="en-isle en-isle--2"></i><i class="en-waves"></i></div>
+        <div class="en-wrap en-crew">
+            <header class="en-crew__head">
+                <div class="en-crew__top">
+                    <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm en-crew__back" onclick="logoutToRoleSelect()"><span data-icon="back" data-size="24"></span>返回身分選擇</button>
+                    <div class="en-card__brand"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div>
+                </div>
+                <h1 class="ds-plank en-crew__title" id="crew-title">船員登記所</h1>
+                <p class="en-lead">選一位小船員，陪你一起探索六座數學島嶼！</p>
+            </header>
+            <div class="crew-stage" id="crew-stage" role="group" aria-labelledby="crew-title"></div>
+            <div class="crew-boardbar" id="crew-boardbar">
+                <div class="crew-who" id="crew-who" aria-hidden="true"></div>
+                <button type="button" class="ds-btn ds-btn--coral ds-btn--lg crew-go" id="btn-boarding" aria-disabled="true"><span data-icon="next" data-size="30"></span>登船出發</button>
+                <p class="ds-hint crew-msg" id="crew-msg" role="status" aria-live="polite">先點一位小船員吧！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 學生端：海上六島地圖（階段 5） -->
+    <div id="screen-map" class="screen sm-screen">
+        <header class="sm-hud">
+            <div class="app-logo" id="map-logo"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div>
+            <div class="sm-hud__pills">
+                <div class="ds-hud__pill sm-pill">
+                    <span class="map-avatar" id="ui-my-avatar" aria-hidden="true"></span>
+                    <span class="sm-pill__txt"><span class="sm-pill__main" id="ui-nickname"></span><small class="status-title-text" id="ui-title">數學小旅人</small></span>
+                </div>
+                <div class="ds-hud__pill sm-pill">
+                    <span data-icon="star" data-size="34"></span>
+                    <span class="sm-pill__txt"><span class="sm-pill__main"><span id="ui-total-stars">0</span> / 54</span><small class="status-progress-text" id="ui-next-title-hint">再 9 星升級！</small></span>
+                </div>
+            </div>
+            <div class="sm-hud__btns">
+                <button type="button" class="ds-btn ds-btn--violet ds-btn--sm" onclick="showHistoryScreen()"><span data-icon="book" data-size="26"></span>冒險日誌</button>
+                <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm" onclick="logoutToRoleSelect()"><span data-icon="logout" data-size="26"></span>登出</button>
+            </div>
+        </header>
+
+        <div class="sm-sea" id="sm-sea">
+            <div class="sm-sea__bg" aria-hidden="true"><i class="sm-sun"></i></div>
+            <div class="sm-scroller" id="map-canvas-container" role="region" aria-label="六島海圖。用手指左右滑動，或按鍵盤左右方向鍵切換島嶼">
+                <div class="sm-world" id="sm-world">
+                    <div class="sm-deco" aria-hidden="true"><i class="sm-cloud sm-cloud--1"></i><i class="sm-cloud sm-cloud--2"></i><i class="sm-cloud sm-cloud--3"></i><i class="sm-cloud sm-cloud--4"></i><i class="sm-cloud sm-cloud--5"></i><svg class="sm-gull sm-gull--1" viewBox="0 0 24 10" focusable="false"><path d="M1 8Q6 0 12 7Q18 0 23 8"/></svg><svg class="sm-gull sm-gull--2" viewBox="0 0 24 10" focusable="false"><path d="M1 8Q6 0 12 7Q18 0 23 8"/></svg><svg class="sm-gull sm-gull--3" viewBox="0 0 24 10" focusable="false"><path d="M1 8Q6 0 12 7Q18 0 23 8"/></svg><svg class="sm-far sm-far--1" viewBox="0 0 30 30" focusable="false"><path d="M14 2V20H4Z" fill="#fff"/><path d="M16 6V20H26Z" fill="#FFD166"/><path d="M3 22H27L24 27H6Z" fill="#B9824E"/></svg><svg class="sm-far sm-far--2" viewBox="0 0 30 30" focusable="false"><path d="M14 2V20H4Z" fill="#fff"/><path d="M16 6V20H26Z" fill="#FFD166"/><path d="M3 22H27L24 27H6Z" fill="#B9824E"/></svg><svg class="sm-far sm-far--3" viewBox="0 0 30 30" focusable="false"><path d="M14 2V20H4Z" fill="#fff"/><path d="M16 6V20H26Z" fill="#FFD166"/><path d="M3 22H27L24 27H6Z" fill="#B9824E"/></svg><svg class="sm-far sm-far--4" viewBox="0 0 30 30" focusable="false"><path d="M14 2V20H4Z" fill="#fff"/><path d="M16 6V20H26Z" fill="#FFD166"/><path d="M3 22H27L24 27H6Z" fill="#B9824E"/></svg><i class="sm-buoy sm-buoy--1"></i><i class="sm-buoy sm-buoy--2"></i><i class="sm-buoy sm-buoy--3"></i><i class="sm-buoy sm-buoy--4"></i><i class="sm-waves"></i></div>
+                    <svg class="sm-route" id="sm-route" aria-hidden="true" focusable="false"></svg>
+                    <ol class="sm-islands" id="sm-islands" aria-label="六座島嶼，依航線順序排列">
+                <li class="sm-stop" id="stop-add">
+                    <button type="button" class="island-node sm-island isl-add star-0 lh-0 is-new" id="node-add" data-island="add" data-state="new" data-index="0" onclick="triggerBoat('加法島', this)" aria-label="加法島，尚未開始，燈塔 0／3，星星 0／9。按下前往這座島">
+                        <span class="sm-flag" aria-hidden="true"><span data-icon="compass" data-size="20"></span>你在這裡</span>
+                        <span class="sm-island__scene" aria-hidden="true"><span class="sm-island__ring"></span><span class="sm-island__art" id="art-add"></span><span class="sm-island__lh" id="lh-add"></span><span class="sm-berth" id="berth-add"></span></span>
+                        <span class="sm-island__plank" aria-hidden="true">加法島</span>
+                        <span class="sm-island__meta" aria-hidden="true">
+                            <span class="sm-chip sm-chip--new" id="chip-add"></span>
+                            <span class="sm-island__stats">
+                                <span class="sm-stat"><span data-icon="star" data-size="20"></span><span id="stars-add">0</span><small>／9</small></span>
+                            <span class="sm-stat"><span data-icon="lighthouse" data-size="20"></span><span class="lh-count" id="lhc-add">0/3</span></span>
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                <li class="sm-stop" id="stop-sub">
+                    <button type="button" class="island-node sm-island isl-sub star-0 lh-0 is-new" id="node-sub" data-island="sub" data-state="new" data-index="1" onclick="triggerBoat('減法島', this)" aria-label="減法島，尚未開始，燈塔 0／3，星星 0／9。按下前往這座島">
+                        <span class="sm-flag" aria-hidden="true"><span data-icon="compass" data-size="20"></span>你在這裡</span>
+                        <span class="sm-island__scene" aria-hidden="true"><span class="sm-island__ring"></span><span class="sm-island__art" id="art-sub"></span><span class="sm-island__lh" id="lh-sub"></span><span class="sm-berth" id="berth-sub"></span></span>
+                        <span class="sm-island__plank" aria-hidden="true">減法島</span>
+                        <span class="sm-island__meta" aria-hidden="true">
+                            <span class="sm-chip sm-chip--new" id="chip-sub"></span>
+                            <span class="sm-island__stats">
+                                <span class="sm-stat"><span data-icon="star" data-size="20"></span><span id="stars-sub">0</span><small>／9</small></span>
+                            <span class="sm-stat"><span data-icon="lighthouse" data-size="20"></span><span class="lh-count" id="lhc-sub">0/3</span></span>
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                <li class="sm-stop" id="stop-mul">
+                    <button type="button" class="island-node sm-island isl-mul star-0 lh-0 is-new" id="node-mul" data-island="mul" data-state="new" data-index="2" onclick="triggerBoat('乘法島', this)" aria-label="乘法島，尚未開始，燈塔 0／3，星星 0／9。按下前往這座島">
+                        <span class="sm-flag" aria-hidden="true"><span data-icon="compass" data-size="20"></span>你在這裡</span>
+                        <span class="sm-island__scene" aria-hidden="true"><span class="sm-island__ring"></span><span class="sm-island__art" id="art-mul"></span><span class="sm-island__lh" id="lh-mul"></span><span class="sm-berth" id="berth-mul"></span></span>
+                        <span class="sm-island__plank" aria-hidden="true">乘法島</span>
+                        <span class="sm-island__meta" aria-hidden="true">
+                            <span class="sm-chip sm-chip--new" id="chip-mul"></span>
+                            <span class="sm-island__stats">
+                                <span class="sm-stat"><span data-icon="star" data-size="20"></span><span id="stars-mul">0</span><small>／9</small></span>
+                            <span class="sm-stat"><span data-icon="lighthouse" data-size="20"></span><span class="lh-count" id="lhc-mul">0/3</span></span>
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                <li class="sm-stop" id="stop-div">
+                    <button type="button" class="island-node sm-island isl-div star-0 lh-0 is-new" id="node-div" data-island="div" data-state="new" data-index="3" onclick="triggerBoat('除法島', this)" aria-label="除法島，尚未開始，燈塔 0／3，星星 0／9。按下前往這座島">
+                        <span class="sm-flag" aria-hidden="true"><span data-icon="compass" data-size="20"></span>你在這裡</span>
+                        <span class="sm-island__scene" aria-hidden="true"><span class="sm-island__ring"></span><span class="sm-island__art" id="art-div"></span><span class="sm-island__lh" id="lh-div"></span><span class="sm-berth" id="berth-div"></span></span>
+                        <span class="sm-island__plank" aria-hidden="true">除法島</span>
+                        <span class="sm-island__meta" aria-hidden="true">
+                            <span class="sm-chip sm-chip--new" id="chip-div"></span>
+                            <span class="sm-island__stats">
+                                <span class="sm-stat"><span data-icon="star" data-size="20"></span><span id="stars-div">0</span><small>／9</small></span>
+                            <span class="sm-stat"><span data-icon="lighthouse" data-size="20"></span><span class="lh-count" id="lhc-div">0/3</span></span>
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                <li class="sm-stop" id="stop-wp">
+                    <button type="button" class="island-node sm-island isl-wp star-0 lh-0 is-new" id="node-wp" data-island="wp" data-state="new" data-index="4" onclick="triggerBoat('應用題島', this)" aria-label="應用題島，尚未開始，燈塔 0／3，星星 0／9。按下前往這座島">
+                        <span class="sm-flag" aria-hidden="true"><span data-icon="compass" data-size="20"></span>你在這裡</span>
+                        <span class="sm-island__scene" aria-hidden="true"><span class="sm-island__ring"></span><span class="sm-island__art" id="art-wp"></span><span class="sm-island__lh" id="lh-wp"></span><span class="sm-berth" id="berth-wp"></span></span>
+                        <span class="sm-island__plank sm-island__plank--long" aria-hidden="true">應用題島</span>
+                        <span class="sm-island__meta" aria-hidden="true">
+                            <span class="sm-chip sm-chip--new" id="chip-wp"></span>
+                            <span class="sm-island__stats">
+                                <span class="sm-stat"><span data-icon="star" data-size="20"></span><span id="stars-wp">0</span><small>／9</small></span>
+                            <span class="sm-stat"><span data-icon="lighthouse" data-size="20"></span><span class="lh-count" id="lhc-wp">0/3</span></span>
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                <li class="sm-stop" id="stop-ord">
+                    <button type="button" class="island-node sm-island isl-ord star-0 lh-0 is-new" id="node-ord" data-island="mix" data-state="new" data-index="5" onclick="triggerBoat('四則運算島', this)" aria-label="四則運算島，尚未開始，燈塔 0／3，星星 0／9。按下前往這座島">
+                        <span class="sm-flag" aria-hidden="true"><span data-icon="compass" data-size="20"></span>你在這裡</span>
+                        <span class="sm-island__scene" aria-hidden="true"><span class="sm-island__ring"></span><span class="sm-island__art" id="art-ord"></span><span class="sm-island__lh" id="lh-ord"></span><span class="sm-berth" id="berth-ord"></span></span>
+                        <span class="sm-island__plank sm-island__plank--long" aria-hidden="true">四則運算島</span>
+                        <span class="sm-island__meta" aria-hidden="true">
+                            <span class="sm-chip sm-chip--new" id="chip-ord"></span>
+                            <span class="sm-island__stats">
+                                <span class="sm-stat"><span data-icon="star" data-size="20"></span><span id="stars-ord">0</span><small>／9</small></span>
+                            <span class="sm-stat"><span data-icon="lighthouse" data-size="20"></span><span class="lh-count" id="lhc-ord">0/3</span></span>
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                    </ol>
+                    <div id="player-avatar" class="sm-boat" aria-hidden="true"></div>
+                </div>
+            </div>
+            <p class="sm-hint" id="sm-hint" aria-hidden="true">← 左右滑動，看看其他島嶼 →</p>
+        </div>
+
+        <section class="sm-panel" id="sm-panel" aria-labelledby="sm-panel-name">
+            <ol class="sm-mini" id="sm-mini" aria-label="六島航線進度">
+            <li><button type="button" class="sm-dot" id="dot-add" data-state="new" tabindex="-1" onclick="SeaMap.select(0)" aria-label="第 1 座：加法島，尚未開始"><span class="sm-dot__mark" aria-hidden="true">1</span><span class="sm-dot__name" aria-hidden="true">加法</span></button></li>
+            <li><button type="button" class="sm-dot" id="dot-sub" data-state="new" tabindex="-1" onclick="SeaMap.select(1)" aria-label="第 2 座：減法島，尚未開始"><span class="sm-dot__mark" aria-hidden="true">2</span><span class="sm-dot__name" aria-hidden="true">減法</span></button></li>
+            <li><button type="button" class="sm-dot" id="dot-mul" data-state="new" tabindex="-1" onclick="SeaMap.select(2)" aria-label="第 3 座：乘法島，尚未開始"><span class="sm-dot__mark" aria-hidden="true">3</span><span class="sm-dot__name" aria-hidden="true">乘法</span></button></li>
+            <li><button type="button" class="sm-dot" id="dot-div" data-state="new" tabindex="-1" onclick="SeaMap.select(3)" aria-label="第 4 座：除法島，尚未開始"><span class="sm-dot__mark" aria-hidden="true">4</span><span class="sm-dot__name" aria-hidden="true">除法</span></button></li>
+            <li><button type="button" class="sm-dot" id="dot-wp" data-state="new" tabindex="-1" onclick="SeaMap.select(4)" aria-label="第 5 座：應用題島，尚未開始"><span class="sm-dot__mark" aria-hidden="true">5</span><span class="sm-dot__name" aria-hidden="true">應用題</span></button></li>
+            <li><button type="button" class="sm-dot" id="dot-ord" data-state="new" tabindex="-1" onclick="SeaMap.select(5)" aria-label="第 6 座：四則運算島，尚未開始"><span class="sm-dot__mark" aria-hidden="true">6</span><span class="sm-dot__name" aria-hidden="true">四則</span></button></li>
+            </ol>
+            <div class="sm-panel__info" aria-live="polite" aria-atomic="true">
+                <span class="sm-panel__pos" id="sm-pos">第 <b>1</b>／6 座</span>
+                <h2 class="sm-panel__name" id="sm-panel-name">加法島</h2>
+                <span class="sm-chip sm-chip--new" id="sm-panel-chip"></span>
+                <span class="sm-panel__stats"><span class="sm-stat"><span data-icon="star" data-size="20"></span><span id="sm-panel-stars">0／9</span></span><span class="sm-stat"><span data-icon="lighthouse" data-size="20"></span><span id="sm-panel-lh">燈塔 0／3</span></span></span>
+                <p class="sm-panel__theme" id="sm-panel-theme"></p>
+            </div>
+            <button type="button" class="ds-btn ds-btn--coral ds-btn--lg" id="sm-enter" onclick="SeaMap.enterCurrent()"><span data-icon="next" data-size="30"></span><span id="sm-enter-text">進入島嶼</span></button>
+        </section>
+    </div>
+
+    <!-- 冒險日誌（階段 8 改版：船長冒險日誌；id 與開關方式不變，只讀取既有進度資料，不寫入任何東西） -->
+    <div id="screen-history" class="screen hj-screen">
+        <div class="hj-sea" aria-hidden="true"><i class="hj-wave hj-wave--1"></i><i class="hj-wave hj-wave--2"></i></div>
+        <div class="hj-wrap">
+            <header class="hj-head">
+                <button type="button" class="ds-btn ds-btn--ghost hj-back" id="history-back" onclick="switchScreen('screen-map')"><span data-icon="back" data-size="28"></span>回到六島海圖</button>
+                <div class="hj-title">
+                    <span class="hj-title__icon" data-icon="book" data-size="44"></span>
+                    <div><h1 class="hj-title__text">冒險日誌</h1><div class="brand-sub-line"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div></div>
+                </div>
+                <div class="hj-crew">
+                    <span class="hj-avatar" id="ui-history-avatar" aria-hidden="true"></span>
+                    <div class="hj-crew__text"><strong id="ui-history-nick">船員</strong><small id="ui-history-user"></small></div>
+                </div>
+                <div class="hj-stats">
+                    <div class="hj-stat"><span data-icon="star" data-size="30"></span><div><b id="ui-history-total">0</b><small>總星數</small></div></div>
+                    <div class="hj-stat"><span data-icon="lighthouse" data-size="30"></span><div><b id="ui-history-lh">0</b><small id="ui-history-lh-note">點亮的燈塔層數</small></div></div>
+                </div>
+            </header>
+
+            <section class="hj-body" aria-label="冒險紀錄">
+                <div class="hj-tablewrap" id="history-table-wrap" role="region" aria-label="冒險紀錄表格" tabindex="0">
+                    <table class="history-table hj-table">
+                        <caption class="hj-sr">冒險紀錄（最新的在最上面）</caption>
+                        <thead><tr><th scope="col">作答時間</th><th scope="col">島嶼</th><th scope="col">學習區域</th><th scope="col">題目或活動類型</th><th scope="col">答對率</th><th scope="col">獲得星星</th></tr></thead>
+                        <tbody id="history-tbody"></tbody>
+                    </table>
+                </div>
+                <ul class="hj-cards" id="history-cards" aria-label="冒險紀錄卡片"></ul>
+
+                <div class="hj-empty" id="history-empty" hidden>
+                    <svg class="hj-empty__art" viewBox="0 0 240 170" role="img" aria-label="一本空白的日誌、羅盤和一艘小船">
+                        <path d="M0 150q20-10 40 0t40 0 40 0 40 0 40 0 40 0v20H0z" fill="#8FD8E6" opacity=".55"/>
+                        <path d="M0 160q20-8 40 0t40 0 40 0 40 0 40 0 40 0v10H0z" fill="#20C5D8" opacity=".5"/>
+                        <g stroke="#17324D" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+                            <path d="M38 52h66a8 8 0 0 1 8 8v66H46a8 8 0 0 1-8-8z" fill="#FFF9E8"/>
+                            <path d="M112 60a8 8 0 0 1 8-8h60a8 8 0 0 1 8 8v58a8 8 0 0 1-8 8h-68z" fill="#FFF9E8"/>
+                            <path d="M112 60v66" fill="none"/>
+                            <path d="M52 72h48M52 86h48M52 100h34" fill="none" stroke="#BFD3DF"/>
+                            <path d="M126 72h48M126 86h48M126 100h30" fill="none" stroke="#BFD3DF"/>
+                            <circle cx="178" cy="108" r="22" fill="#D9F7F5"/>
+                            <path d="m189 94-7 14-14 7 7-14z" fill="#FF7A59"/>
+                            <circle cx="178" cy="108" r="3" fill="#17324D" stroke="none"/>
+                            <path d="M24 138h46l-8 12H34z" fill="#FF7A59"/>
+                            <path d="M47 112v26" fill="none"/>
+                            <path d="M45 116v18H33z" fill="#FFF9E8"/>
+                            <path d="M49 118v16h14z" fill="#FFD166"/>
+                        </g>
+                    </svg>
+                    <p class="hj-empty__text">還沒有冒險紀錄，先去挑戰一座島吧！</p>
+                    <button type="button" class="ds-btn ds-btn--coral" id="history-empty-back" onclick="switchScreen('screen-map')"><span data-icon="map" data-size="28"></span>回到六島海圖</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- 島嶼入口（港口）：選擇學習區／練習區／掌握確認區。階段 6 改版；id 與開關方式不變 -->
+    <div id="modal-report" class="modal-overlay zp-overlay">
+        <div class="modal-content zp-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="zp-head">
+                <span class="zp-head__art" id="zp-art" aria-hidden="true"></span>
+                <div class="zp-head__txt">
+                    <h2 id="modal-title">島嶼挑戰紀錄</h2>
+                    <div id="modal-records"></div>
+                </div>
+            </div>
+            <div id="modal-actions" class="zp-zones"></div>
+            <div class="brand-foot"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div>
+        </div>
+    </div>
+
+    <!-- 離開島嶼的確認（答到一半按「回海圖」才會出現） -->
+    <div id="modal-leave" class="ds-overlay" hidden data-modal="strict">
+        <div class="ds-dialog" role="alertdialog" aria-modal="true" aria-labelledby="leave-title" aria-describedby="leave-desc">
+            <h2 class="ds-dialog__title" id="leave-title">要回到海圖嗎？</h2>
+            <p class="ds-dialog__body" id="leave-desc">這一區還沒完成，現在離開的話，這次的作答不會記成星星喔。</p>
+            <div class="ds-dialog__actions">
+                <button type="button" class="ds-btn ds-btn--ghost" onclick="IslandUI.leaveCancel()" data-autofocus>繼續挑戰</button>
+                <button type="button" class="ds-btn ds-btn--coral" onclick="IslandUI.leaveConfirm()"><span data-icon="map" data-size="26"></span>回海圖</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 學生端：島內遊戲區（階段 6 改版：港口 → 動畫 → 題目 → 回饋 → 結果 → 回海圖） -->
+    <div id="screen-game" class="screen ig-screen">
+        <div class="ig-bg" aria-hidden="true"><i class="ig-sun"></i><i class="ig-cloud ig-cloud--1"></i><i class="ig-cloud ig-cloud--2"></i><i class="ig-wave"></i><div class="ig-scene" id="ig-scene" aria-hidden="true"></div></div>
+        <header class="ig-hud">
+            <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm ig-back" id="btn-leave" onclick="leaveIsland()"><span data-icon="back" data-size="26"></span><span>回海圖</span></button>
+            <div class="ig-title">
+                <span class="ig-title__art" id="ui-island-art" aria-hidden="true"></span>
+                <div class="ig-title__txt"><h2 id="ui-island-name">島嶼名稱</h2><span class="ds-chip ig-zone-chip" id="ui-zone-chip">概念學習區</span></div>
+            </div>
+            <div class="ig-hud__right">
+                <ol class="ig-lamps" id="ui-zone-lamps" aria-label="三個區域的燈塔進度"></ol>
+                <div class="ds-hud__pill ig-stars"><span data-icon="star" data-size="30"></span><span class="ig-stars__txt">本局獲得 <b id="ui-island-stars">0</b></span></div>
+            </div>
+        </header>
+
+        <div class="ig-main" id="ig-main">
+            <ol class="ig-path" id="ui-progress-path" aria-label="題目進度"></ol>
+
+            <!-- 學習動畫 -->
+            <div id="animation-view">
+                <div id="theater-stage" class="theater ig-theater" aria-hidden="true"></div>
+                <div id="theater-sub" class="theater-subtitle ig-sub" role="status" aria-live="polite">動畫載入中...</div>
+                <button type="button" class="btn-next-pop" id="btn-anim-next" onclick="endAnimation()"><span data-icon="next" data-size="30"></span><span>換我試試看</span></button>
+                <div class="anim-controls ig-anim-ctl">
+                    <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm anim-ctl" id="btn-anim-replay" onclick="AnimationEngine.replay()"><span data-icon="replay" data-size="26"></span><span>重播配音</span></button>
+                    <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm anim-ctl" id="btn-anim-caption" aria-pressed="true" onclick="AnimationEngine.toggleCaptions()"><span data-icon="captions" data-size="26"></span><span id="anim-caption-label">字幕：開</span></button>
+                    <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm anim-ctl" id="btn-anim-skip" onclick="endAnimation()"><span data-icon="skip" data-size="26"></span><span>跳過動畫</span></button>
+                </div>
+            </div>
+
+            <!-- 結果卡（完成一區時才出現，內容由 IslandUI.showResult 填入） -->
+            <section id="island-result" class="ig-result" aria-live="polite"></section>
+
+            <!-- 基礎運算題（加、減、乘、除、四則運算島） -->
+            <div id="interactive-view">
+                <div class="ig-grid">
+                <section class="story-panel ig-card ig-q">
+                    <span class="badge-pill ig-badge" id="ui-zone-badge-basic">基礎運算挑戰</span>
+                    <div class="expression-display ig-expr" id="ui-expression"></div>
+                    <div class="input-wrapper ig-answer">
+                        <span class="ig-eq" aria-hidden="true">＝</span>
+                        <input type="number" id="ui-input" class="answer-box qa-input ig-input" placeholder="?" inputmode="numeric" aria-label="你的答案" enterkeyhint="done" oninput="QF.onEdit()">
+                    </div>
+                </section>
+                <div class="ig-helper">
+                    <span class="ig-crew" aria-hidden="true"></span>
+                    <div id="ui-feedback" class="feedback-bubble info" role="status" aria-live="polite">請算出紙卡上的答案！</div>
+                </div>
+                <div class="numpad ig-pad">
+                    <button type="button" class="btn-num ig-key" onclick="typeNum(1)">1</button><button type="button" class="btn-num ig-key" onclick="typeNum(2)">2</button><button type="button" class="btn-num ig-key" onclick="typeNum(3)">3</button><button type="button" class="btn-num ig-key" onclick="typeNum(4)">4</button><button type="button" class="btn-num ig-key" onclick="typeNum(5)">5</button><button type="button" class="btn-num ig-key" onclick="typeNum(6)">6</button><button type="button" class="btn-num ig-key" onclick="typeNum(7)">7</button><button type="button" class="btn-num ig-key" onclick="typeNum(8)">8</button><button type="button" class="btn-num ig-key" onclick="typeNum(9)">9</button><button type="button" class="btn-num ig-key ig-key--clear btn-action-clear" onclick="typeNum('C')" aria-label="清除答案"><span data-icon="close" data-size="22"></span><span>清除</span></button><button type="button" class="btn-num ig-key" onclick="typeNum(0)">0</button><button type="button" class="btn-num ig-key ig-key--back btn-action-back" onclick="typeNum('<')" aria-label="倒退一格"><span data-icon="back" data-size="22"></span><span>倒退</span></button>
+                    <button type="button" class="ds-btn ds-btn--mint ds-btn--lg ig-submit" id="btn-submit" onclick="submitAns()"><span data-icon="check" data-size="30"></span><span>確認送出</span><kbd class="ig-kbd">Enter</kbd></button>
+                </div>
+                </div>
+                <button type="button" class="btn-next-pop" id="btn-next" onclick="nextQ()"><span data-icon="next" data-size="30"></span><span>下一題</span><kbd class="ig-kbd">Enter</kbd></button>
+                <button type="button" class="btn-next-pop btn-finish-pop" id="btn-finish" onclick="backToMap()"><span data-icon="map" data-size="30"></span><span>領取星星回海圖</span><kbd class="ig-kbd">Enter</kbd></button>
+            </div>
+
+            <!-- 應用題島（單步驟與兩步驟） -->
+            <div id="word-problem-view">
+                <div class="ig-grid">
+                <section class="story-panel ig-card ig-q">
+                    <span class="badge-pill ig-badge" id="wp-zone">閱讀理解區</span>
+                    <button type="button" class="ds-btn ds-btn--gold ds-btn--sm ig-read" onclick="WordProblemUI.speakQuestion()"><span data-icon="sound" data-size="26"></span><span>朗讀</span></button>
+                    <div id="wp-story-text" class="wp-text-content ig-story"></div>
+                </section>
+                <div class="ig-helper">
+                    <span class="ig-crew" aria-hidden="true"></span>
+                    <div id="wp-feedback" class="feedback-bubble info" role="status" aria-live="polite">請先判斷要用什麼方法，再算出答案！</div>
+                </div>
+                <div class="wp-action-panel ig-card ig-work" id="wp-single-panel">
+                    <div class="op-title"><span class="ig-step">1</span>選擇運算方法</div>
+                    <div class="op-buttons" role="group" aria-label="運算方法"><button type="button" class="btn-op ig-op" id="op-add" aria-pressed="false" onclick="WordProblemUI.selectOp('+')"><span data-icon="plus" data-size="30"></span><span>加法</span></button><button type="button" class="btn-op ig-op" id="op-sub" aria-pressed="false" onclick="WordProblemUI.selectOp('-')"><span data-icon="minus" data-size="30"></span><span>減法</span></button><button type="button" class="btn-op ig-op" id="op-mul" aria-pressed="false" onclick="WordProblemUI.selectOp('*')"><span data-icon="times" data-size="30"></span><span>乘法</span></button><button type="button" class="btn-op ig-op" id="op-div" aria-pressed="false" onclick="WordProblemUI.selectOp('/')"><span data-icon="divide" data-size="30"></span><span>除法</span></button></div>
+                    <div class="op-title"><span class="ig-step">2</span>輸入答案數字</div>
+                    <div class="input-wrapper ig-answer">
+                        <input type="number" id="wp-answer-input" class="answer-box qa-input ig-input" placeholder="?" inputmode="numeric" aria-label="你的答案" enterkeyhint="done" oninput="QF.onEdit()">
+                        <span id="wp-unit-label" class="ig-unit">單位</span>
+                    </div>
+                    <button type="button" class="ds-btn ds-btn--mint ds-btn--lg ig-submit" id="wp-btn-submit" onclick="WordProblemUI.submit()"><span data-icon="check" data-size="30"></span><span>確認送出</span><kbd class="ig-kbd">Enter</kbd></button>
+                </div>
+                <div class="wp-action-panel tw-panel ig-card ig-work" id="tw-panel" style="display:none;">
+                    <div class="tw-mode ds-chip ds-chip--info" id="tw-mode-label">引導式：一步一步來</div>
+                    <div id="tw-guided">
+                        <div class="tw-step" id="tw-step1">
+                            <div class="op-title" id="tw-s1-ask">先求：</div>
+                            <div class="op-buttons" id="tw-ops1" role="group" aria-label="第一步的運算方法"><button type="button" class="btn-op ig-op" id="tw1-add" aria-pressed="false" onclick="TwoStepUI.selectOp(1,'+')"><span data-icon="plus" data-size="30"></span><span>加法</span></button><button type="button" class="btn-op ig-op" id="tw1-sub" aria-pressed="false" onclick="TwoStepUI.selectOp(1,'-')"><span data-icon="minus" data-size="30"></span><span>減法</span></button><button type="button" class="btn-op ig-op" id="tw1-mul" aria-pressed="false" onclick="TwoStepUI.selectOp(1,'*')"><span data-icon="times" data-size="30"></span><span>乘法</span></button><button type="button" class="btn-op ig-op" id="tw1-div" aria-pressed="false" onclick="TwoStepUI.selectOp(1,'/')"><span data-icon="divide" data-size="30"></span><span>除法</span></button></div>
+                            <div class="input-wrapper"><input type="number" id="tw-r1" class="answer-box qa-input ig-input" placeholder="?" inputmode="numeric" aria-label="第一步的結果" enterkeyhint="done" oninput="QF.onEdit()"></div>
+                        </div>
+                        <div class="tw-step tw-locked" id="tw-step2">
+                            <div class="op-title" id="tw-s2-ask">再求：</div>
+                            <div class="op-buttons" id="tw-ops2" role="group" aria-label="第二步的運算方法"><button type="button" class="btn-op ig-op" id="tw2-add" aria-pressed="false" onclick="TwoStepUI.selectOp(2,'+')"><span data-icon="plus" data-size="30"></span><span>加法</span></button><button type="button" class="btn-op ig-op" id="tw2-sub" aria-pressed="false" onclick="TwoStepUI.selectOp(2,'-')"><span data-icon="minus" data-size="30"></span><span>減法</span></button><button type="button" class="btn-op ig-op" id="tw2-mul" aria-pressed="false" onclick="TwoStepUI.selectOp(2,'*')"><span data-icon="times" data-size="30"></span><span>乘法</span></button><button type="button" class="btn-op ig-op" id="tw2-div" aria-pressed="false" onclick="TwoStepUI.selectOp(2,'/')"><span data-icon="divide" data-size="30"></span><span>除法</span></button></div>
+                            <div class="input-wrapper"><input type="number" id="tw-r2" class="answer-box qa-input ig-input" placeholder="?" inputmode="numeric" aria-label="第二步的答案" enterkeyhint="done" oninput="QF.onEdit()" disabled></div>
+                        </div>
+                    </div>
+                    <div id="tw-merged" style="display:none;">
+                        <div class="op-title"><span data-icon="parens" data-size="28"></span>把兩步合併成一個算式（可用 ＋ － × ÷ 和圓括號 ( )）</div>
+                        <div class="input-wrapper"><input type="text" id="tw-expr" class="answer-box qa-input ig-input ig-input--wide" placeholder="例如 (18+6)÷4" aria-label="合併後的算式" enterkeyhint="next" autocomplete="off" oninput="QF.onEdit()"></div>
+                        <div class="op-title"><span data-icon="check" data-size="28"></span>答案</div>
+                        <div class="input-wrapper"><input type="number" id="tw-r3" class="answer-box qa-input ig-input" placeholder="?" inputmode="numeric" aria-label="最後的答案" enterkeyhint="done" oninput="QF.onEdit()"></div>
+                    </div>
+                    <div class="tw-unit-row"><label for="tw-unit">單位：</label><select id="tw-unit" class="tw-unit-select ds-select" onchange="QF.onEdit()"></select></div>
+                    <button type="button" class="ds-btn ds-btn--mint ds-btn--lg ig-submit" id="tw-btn-submit" onclick="TwoStepUI.submit()"><span data-icon="check" data-size="30"></span><span>確認送出</span><kbd class="ig-kbd">Enter</kbd></button>
+                </div>
+                </div>
+                <button type="button" class="btn-next-pop" id="wp-btn-next" onclick="nextQ()"><span data-icon="next" data-size="30"></span><span>下一題</span><kbd class="ig-kbd">Enter</kbd></button>
+                <button type="button" class="btn-next-pop btn-finish-pop" id="wp-btn-finish" onclick="backToMap()"><span data-icon="map" data-size="30"></span><span>領取星星回海圖</span><kbd class="ig-kbd">Enter</kbd></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 教師端：登入 -->
+    <div id="screen-admin-login" class="screen en-screen">
+        <div class="en-sea en-sea--teacher" aria-hidden="true"><i class="en-sun"></i><i class="en-cloud en-cloud--1"></i><i class="en-cloud en-cloud--2"></i><i class="en-isle en-isle--1"></i><i class="en-isle en-isle--2"></i><i class="en-lh"></i><i class="en-waves"></i></div>
+        <div class="en-wrap en-wrap--card">
+            <div class="ds-card ds-card--canvas en-card en-card--teacher">
+                <div class="en-card__brand"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span></div>
+                <h1 class="ds-plank en-card__title"><span data-icon="teacher" data-size="30"></span>教師戰情室</h1>
+                <div class="ds-field">
+                    <label class="ds-label" for="admin-pwd">教師密碼</label>
+                    <input type="password" id="admin-pwd" class="ds-input" placeholder="請輸入教師密碼" autocomplete="current-password" enterkeyhint="go" onkeyup="if(event.key==='Enter') doAdminAuth();">
+                </div>
+                <p id="admin-error-msg" class="ds-error en-error" role="alert"></p>
+                <div class="en-actions">
+                    <button type="button" class="ds-btn ds-btn--deep ds-btn--block" onclick="doAdminAuth()"><span data-icon="chart" data-size="26"></span>登入並載入資料</button>
+                </div>
+                <button type="button" class="ds-btn ds-btn--ghost ds-btn--block en-back" onclick="logoutToRoleSelect()"><span data-icon="back" data-size="26"></span>返回身分選擇</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 教師端：儀表板（階段 8 視覺統一：深海藍／青綠／乳白；圖示一律用 ui-kit.js 的 SVG；所有 id、篩選、分析、匯出功能不變） -->
+    <div id="screen-admin-dashboard" class="screen td-screen" style="background:var(--bg-paper);">
+        <div class="admin-container td-container">
+            <header class="admin-header-area td-head">
+                <div class="td-head__title">
+                    <span class="td-head__icon" data-icon="teacher" data-size="52"></span>
+                    <div>
+                        <div class="admin-brand"><span class="app-name"><span class="bn-main">小小算術家</span><span class="bn-colon">：</span><span class="bn-sub">六島大冒險</span></span>｜教師端</div>
+                        <h1 id="dashboard-title" class="td-title"><span class="td-title__icon" data-icon="chart" data-size="34"></span><span id="dashboard-title-text">班級學習分析儀表板</span></h1>
+                        <p class="td-updated">最後更新時間：<time id="admin-updated">尚未載入</time></p>
+                    </div>
+                </div>
+                <div class="td-head__actions">
+                    <button type="button" class="ds-btn ds-btn--gold ds-btn--sm" onclick="refreshAdminData()" id="btn-admin-refresh"><span data-icon="refresh" data-size="24"></span>重新整理</button>
+                    <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm" onclick="logoutToRoleSelect()" id="btn-admin-logout"><span data-icon="logout" data-size="24"></span>登出系統</button>
+                </div>
+            </header>
+
+            <section class="td-card td-filters" aria-labelledby="td-filter-h">
+                <h2 class="td-h td-h--sm" id="td-filter-h"><span data-icon="filter" data-size="26"></span>篩選條件</h2>
+                <div class="filter-bar">
+                    <label>日期（起）<input type="date" id="f-from" onchange="applyAdminFilters()"></label>
+                    <label>日期（迄）<input type="date" id="f-to" onchange="applyAdminFilters()"></label>
+                    <label>學生<select id="f-student" onchange="applyAdminFilters()"></select></label>
+                    <label>島嶼<select id="f-island" onchange="applyAdminFilters()"></select></label>
+                    <label>學習區域<select id="f-stage" onchange="applyAdminFilters()"></select></label>
+                    <label>運算概念<select id="f-op" onchange="applyAdminFilters()"></select></label>
+                    <label>錯誤類型<select id="f-err" onchange="applyAdminFilters()"></select></label>
+                    <label>提示使用<select id="f-hint" onchange="applyAdminFilters()"></select></label>
+                    <button type="button" class="btn-view td-clear" id="btn-clear-filters" onclick="resetAdminFilters()"><span data-icon="close" data-size="22"></span>清除篩選</button>
+                </div>
+                <div id="filter-note" class="tab-note"></div>
+            </section>
+
+            <div class="stats-grid stats-5 td-summary" id="admin-summary"></div>
+
+            <section class="td-card export-bar td-export" aria-labelledby="td-export-h">
+                <h2 class="td-h td-h--sm" id="td-export-h"><span data-icon="download" data-size="26"></span>匯出資料（CSV）</h2>
+                <div class="td-export__grid">
+                    <div class="td-export__group td-export__group--all">
+                        <strong>不受篩選影響</strong>
+                        <p class="tab-note">全部學生、全部作答紀錄一次匯出（含舊版紀錄；舊版沒有保存的題目與答案會標示「舊版紀錄／資料未保存」）。</p>
+                        <button type="button" class="ds-btn ds-btn--coral ds-btn--sm" id="btn-export-all" onclick="exportAllCSV()"><span data-icon="download" data-size="24"></span>匯出全部作答紀錄（CSV）</button>
+                    </div>
+                    <div class="td-export__group">
+                        <strong>依目前篩選結果匯出</strong>
+                        <p class="tab-note">只匯出上方篩選條件符合的資料。</p>
+                        <div class="td-export__btns">
+                            <button type="button" class="btn-view" onclick="exportDetailCSV()">逐題明細</button>
+                            <button type="button" class="btn-view" onclick="exportConceptCSV()">概念分析</button>
+                            <button type="button" class="btn-view" onclick="exportErrorProneCSV()">易錯題</button>
+                            <button type="button" class="btn-view" onclick="exportSummaryCSV()">全班摘要</button>
+                        </div>
+                    </div>
+                </div>
+                <p id="export-status" class="tab-note td-export__status" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="td-card">
+                <h2 class="sec-h td-h"><span data-icon="hint" data-size="30"></span>概念分析（哪些概念全班比較弱）</h2>
+                <div class="tab-note">首次答對率＝第一次作答就答對的題數 ÷ 作答題數；Lv 欄位是各難度的首次答對率（— 表示沒有資料）。</div>
+                <div class="td-scroll" role="region" aria-label="概念分析表" tabindex="0"><table class="admin-table compact td-wide"><thead><tr><th>運算概念</th><th>題數</th><th>人數</th><th style="min-width:150px;">首次答對率</th><th>提示率</th><th>平均嘗試</th><th>Lv1</th><th>Lv2</th><th>Lv3</th><th>Lv4</th><th>最常見錯誤</th><th>教學建議</th></tr></thead><tbody id="concept-list"></tbody></table></div>
+            </section>
+
+            <section class="td-card">
+                <h2 class="sec-h td-h"><span data-icon="warn" data-size="30"></span>易錯題分析</h2>
+                <div class="tab-note">① 易錯題型：同概念＋同難度的題目合併計算（至少 3 題才列入）。② 易錯題目：同一題被不同學生答錯的次數（題目是隨機產生的，所以只有重複出現的題目才會累積）。</div>
+                <div class="td-scroll" role="region" aria-label="易錯題型表" tabindex="0"><table class="admin-table compact"><thead><tr><th>易錯題型</th><th>題數</th><th>人數</th><th style="min-width:150px;">首次答對率</th><th>平均嘗試</th><th>最常見錯誤</th></tr></thead><tbody id="type-list"></tbody></table></div>
+                <div class="td-scroll" role="region" aria-label="易錯題目表" tabindex="0"><table class="admin-table compact"><thead><tr><th>易錯題目</th><th>概念／難度</th><th>作答人數</th><th>首次答錯</th><th>答錯率</th><th>常見錯誤答案</th><th>最常見錯誤</th></tr></thead><tbody id="question-list"></tbody></table></div>
+            </section>
+
+            <section class="td-card">
+                <h2 class="sec-h td-h"><span data-icon="compass" data-size="30"></span>錯誤類型排行（迷思概念）</h2>
+                <div id="err-chips" class="chip-row"></div>
+                <div class="td-scroll" role="region" aria-label="錯誤類型表" tabindex="0"><table class="admin-table compact"><thead><tr><th>錯誤類型</th><th>類別</th><th>次數</th><th>學生數</th><th>建議的補救方式</th></tr></thead><tbody id="err-list"></tbody></table></div>
+            </section>
+
+            <section class="td-card">
+                <h2 class="sec-h td-h"><span data-icon="crew" data-size="30"></span>學生名單與學習概況</h2>
+                <div class="td-scroll" role="region" aria-label="學生名單表" tabindex="0"><table class="admin-table compact"><thead><tr><th>帳號</th><th>暱稱</th><th>總星數</th><th>題數</th><th>首次答對率</th><th>提示率</th><th>最弱概念</th><th>最後登入</th><th>操作</th></tr></thead><tbody id="students-list"></tbody></table></div>
+            </section>
+
+            <section class="td-card">
+                <h2 class="sec-h td-h"><span data-icon="warn" data-size="30"></span>需要輔導名單（卡關警示）</h2>
+                <div class="td-scroll" role="region" aria-label="需要輔導名單表" tabindex="0"><table class="admin-table compact"><thead><tr><th>帳號</th><th>暱稱</th><th>卡關狀況</th><th>建議</th></tr></thead><tbody id="warning-list"></tbody></table></div>
+            </section>
+        </div>
+    </div>
+
+    <div id="admin-student-modal" class="modal-overlay td-modal">
+        <div class="admin-modal-content td-modal__panel" style="max-width:960px; background:white;" role="dialog" aria-modal="true" aria-labelledby="admin-modal-name">
+            <div class="admin-modal-header td-modal__head"><span data-icon="crew" data-size="40"></span><h1 id="admin-modal-name" class="td-modal__name">學生姓名</h1><button type="button" class="ds-btn ds-btn--ghost ds-btn--sm td-modal__close" id="admin-modal-close" onclick="closeAdminModal()"><span data-icon="close" data-size="24"></span>關閉</button></div>
+            <div class="tab-note">此報告顯示該學生的全部作答紀錄（不受上方篩選影響）。</div>
+            <div class="stats-grid stats-4">
+                <div class="stat-card">總題數<div class="value" id="admin-modal-total">0</div></div>
+                <div class="stat-card">首次答對率<div class="value" id="admin-modal-correct" style="color:var(--mint-strong);">0%</div></div>
+                <div class="stat-card">提示使用率<div class="value" id="admin-modal-hint" style="color:var(--gold-strong);">0%</div></div>
+                <div class="stat-card">平均嘗試次數<div class="value" id="admin-modal-attempt" style="color:var(--danger-strong);">0</div></div>
+            </div>
+            <div class="td-advice"><span data-icon="info" data-size="30"></span><div id="admin-modal-advice" class="advice-box"></div></div>
+            <h2 class="td-h td-h--sm"><span data-icon="hint" data-size="26"></span>各概念掌握度</h2>
+            <div class="td-scroll"><table class="admin-table compact"><thead><tr><th>運算概念</th><th>題數</th><th style="min-width:160px;">首次答對率</th><th>目前最高難度</th></tr></thead><tbody id="admin-modal-concept"></tbody></table></div>
+            <h2 class="td-h td-h--sm"><span data-icon="story" data-size="26"></span>兩步驟應用題分析</h2>
+            <div class="td-scroll"><table class="admin-table compact"><thead><tr><th>指標</th><th>數值</th><th>說明</th></tr></thead><tbody id="admin-modal-two"></tbody></table></div>
+            <h2 class="td-h td-h--sm"><span data-icon="map" data-size="26"></span>各島嶼過關進度</h2>
+            <div class="td-scroll"><table class="admin-table compact"><thead><tr><th>島嶼名稱</th><th>區域</th><th>最佳答對率</th><th>獲得星數</th><th>過關時間</th></tr></thead><tbody id="admin-modal-prog"></tbody></table></div>
+            <h2 class="td-h td-h--sm"><span data-icon="compass" data-size="26"></span>常犯的錯誤類型</h2>
+            <div class="td-scroll"><table class="admin-table compact"><thead><tr><th>錯誤類型</th><th>次數</th><th>建議的補救方式</th></tr></thead><tbody id="admin-modal-errs"></tbody></table></div>
+            <h2 class="td-h td-h--sm"><span data-icon="book" data-size="26"></span>錯題分析本（最近 20 筆）</h2>
+            <div class="td-scroll"><table class="admin-table compact"><thead><tr><th>島嶼</th><th>當時題目</th><th>錯誤答案</th><th>系統迷思診斷</th></tr></thead><tbody id="admin-modal-wrong-list"></tbody></table></div>
+        </div>
+    </div>
+
+    <div id="lh-celebrate" class="lh-celebrate" role="status" aria-live="polite"><div class="lh-card"><span class="lh-card__art" id="lh-celebrate-art" aria-hidden="true"></span><span id="lh-celebrate-text"></span><button type="button" class="ds-btn ds-btn--gold ds-btn--sm lh-skip" onclick="LighthouseSystem.skip()">繼續</button></div></div>
+
+    <!-- ==========================================================================
+         JavaScript：由上而下依序載入（順序不可調換）；網址設定在 js/config.js
+         ========================================================================== -->
+    <script src="js/config.js?v=2026.10.28-10"></script>
+    <script src="js/device.js?v=2026.10.28-10"></script>
+    <script src="js/ui-kit.js?v=2026.10.28-10"></script>
+    <script src="js/crew.js?v=2026.10.28-10"></script>
+    <script src="js/prop-art.js?v=2026.10.28-10"></script>
+    <script src="js/scene-art.js?v=2026.10.28-10"></script>
+    <script src="js/app.js?v=2026.10.28-10"></script>
+    <script src="js/map.js?v=2026.10.28-10"></script>
+    <script src="js/sea-art.js?v=2026.10.28-10"></script>
+    <script src="js/sea-map.js?v=2026.10.28-10"></script>
+    <script src="js/narrator.js?v=2026.10.28-10"></script>
+    <script src="js/lighthouse.js?v=2026.10.28-10"></script>
+    <script src="js/answer-flow.js?v=2026.10.28-10"></script>
+    <script src="js/auth.js?v=2026.10.28-10"></script>
+    <script src="js/crew-ui.js?v=2026.10.28-10"></script>
+    <script src="js/island.js?v=2026.10.28-10"></script>
+    <script src="js/animation.js?v=2026.10.28-10"></script>
+    <script src="js/questions.js?v=2026.10.28-10"></script>
+    <script src="js/twostep.js?v=2026.10.28-10"></script>
+    <script src="js/quiz-ui.js?v=2026.10.28-10"></script>
+    <script src="js/island-ui.js?v=2026.10.28-10"></script>
+    <script src="js/teacher.js?v=2026.10.28-10"></script>
+
+</body>
+</html>
